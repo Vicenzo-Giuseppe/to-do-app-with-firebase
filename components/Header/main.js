@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/button"
 import { Box, Container, Text } from "@chakra-ui/layout"
 import Link from 'next/link'
 import { GlassCard } from "../GlassCard"
-import Logo from './logo'
+import Logo from '../DashBoard/logo'
 
 const Header = ({ email, signOut }) => (
   <GlassCard noBorders>

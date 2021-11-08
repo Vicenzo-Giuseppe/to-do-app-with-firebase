@@ -1,6 +1,7 @@
 // @ts-nocheck 
 import React, { useState, useEffect } from 'react'
 import {
+    Box,
     Flex,
     Heading,
     InputGroup,
@@ -10,7 +11,8 @@ import {
     Text,
     IconButton,
     Divider,
-    useColorMode
+    Container,
+    useColorModeValue
 } from "@chakra-ui/react"
 import DarkModeSwitch from '../components/DarkModeSwitch'
 import {
@@ -23,14 +25,12 @@ import getAbsoluteURL from '../utils/getAbsoluteURL'
 import { AddIcon, DeleteIcon, StarIcon } from "@chakra-ui/icons"
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import { GlassCard } from '../components/GlassCard'
+
 
 const Todo = () => {
-    const { colorMode } = useColorMode()
-    const iconColor = {
-        light: 'red',
-        dark: 'blue'
-    }
+    const bg = useColorModeValue('red.500', 'teal.500')
+    const textColor = useColorModeValue('#EDEDEE', '#1A202C')
+    const inputColor = useColorModeValue('#1A202C', '#EDEDEE')
     const AuthUser = useAuthUser()
     const [input, setInput] = useState('')
     const [todos, setTodos] = useState([])
@@ -42,7 +42,7 @@ const Todo = () => {
         AuthUser.id &&
             firebase
                 .firestore()
-                .collection(AuthUser.id)
+                .collection(AuthUser.email)
                 .orderBy('timestamp', 'desc')
                 .onSnapshot(snapshot => {
 
@@ -55,7 +55,7 @@ const Todo = () => {
             // try to update doc
             firebase
                 .firestore()
-                .collection(AuthUser.id) // each user will have their own collection
+                .collection(AuthUser.email) // each user will have their own collection
                 .doc(input) // set the collection name to the input so that we can easily delete it later on
                 .set({
                     todo: input,
@@ -71,7 +71,7 @@ const Todo = () => {
         try {
             firebase
                 .firestore()
-                .collection(AuthUser.id)
+                .collection(AuthUser.email)
                 .doc(t)
                 .delete()
                 .then(console.log('Data was successfully deleted!'))
@@ -81,57 +81,60 @@ const Todo = () => {
     }
 
     return (
-        <Flex flexDir="column" maxW={800} align="center" justify="center" minH="100vh" m="auto" px={4}>
 
-
+        <Container maxW="container.md">
             <Flex justify="space-between" w="100%" align="center">
-                <Heading mb={4}>Welcome, {AuthUser.email}!</Heading>
+                <Heading mb={4} variant='section-title'>{AuthUser.email} !</Heading>
                 <Flex>
-                    <DarkModeSwitch />
-                    <IconButton ml={2} onClick={AuthUser.signOut} icon={<StarIcon />} />
+                    <DarkModeSwitch bg={bg} />
+
                 </Flex>
             </Flex>
 
             <InputGroup>
                 <InputLeftElement
                     pointerEvents="none"
-                    children={<AddIcon color="gray.300" />}
+                    children={<AddIcon color={bg} />}
                 />
-                <Input type="text" onChange={(e) => setInput(e.target.value)} placeholder="Things To Do" />
+                <Input bg={inputColor} color={textColor} type="text" onChange={(e) => setInput(e.target.value)} />
                 <Button
                     ml={2}
                     onClick={() => sendData()}
+                    bg={bg}
                 >
                     Add Todo
                 </Button>
             </InputGroup>
+            <Box mt='1.25rem'>
+                {todos.map((t, i) => {
+                    return (
+                        <>
+                            <Flex
+                                key={i}
+                                bgColor={inputColor}
 
-            {todos.map((t, i) => {
-                return (
-                    <>
-                        {i > 0 && <Divider />}
-                        <Flex
-                            key={i}
-                            w="100%"
-                            p={5}
-                            my={2}
-                            align="center"
-                            borderRadius={5}
-                            justifyContent="space-between"
-                        >
-                            <Flex align="center">
-                                <Text fontSize="xl" mr={4}>{i + 1}.</Text>
-                                <Text>{t}</Text>
+                                w="100%"
+                                p={5}
+                                my={2}
+                                align="center"
+                                borderRadius={5}
+                                justifyContent="space-between"
+                                opacity='0.84'
+                            >
+                                <Flex align="center">
+                                    <Text color={textColor}>{t}</Text>
+                                </Flex>
+                                <IconButton color='#FFF' bgColor={bg} onClick={() => deleteTodo(t)} icon={<DeleteIcon />} />
                             </Flex>
-                            <IconButton onClick={() => deleteTodo(t)} icon={<DeleteIcon />} />
-                        </Flex>
-                    </>
-                )
-            })}
+                        </>
+                    )
+                })}
 
-        </Flex>
+            </Box>
 
+        </Container>
     )
+
 }
 
 export const getServerSideProps = withAuthUserTokenSSR({
