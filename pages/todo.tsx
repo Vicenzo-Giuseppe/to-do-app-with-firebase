@@ -1,4 +1,12 @@
 // @ts-nocheck 
+import {
+    RangeSlider,
+    RangeSliderTrack,
+    RangeSliderFilledTrack,
+    RangeSliderThumb,
+
+} from "@chakra-ui/react"
+import { UpDownIcon } from "@chakra-ui/icons"
 import React, { useState, useEffect } from 'react'
 import {
     Box,
@@ -10,7 +18,6 @@ import {
     Button,
     Text,
     IconButton,
-    Divider,
     Container,
     useColorModeValue
 } from "@chakra-ui/react"
@@ -25,6 +32,7 @@ import getAbsoluteURL from '../utils/getAbsoluteURL'
 import { AddIcon, DeleteIcon, StarIcon } from "@chakra-ui/icons"
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import Slider from '../components/Slider/main'
 
 
 const Todo = () => {
@@ -34,6 +42,7 @@ const Todo = () => {
     const AuthUser = useAuthUser()
     const [input, setInput] = useState('')
     const [todos, setTodos] = useState([])
+    const [value, setValue] = useState([])
 
     // console.log(AuthUser)
     // console.log(todos)
@@ -50,7 +59,16 @@ const Todo = () => {
                 })
     })
 
+
+    useEffect(() => {
+        console.log(value[1])
+    }, [value])
+
+
+
+
     const sendData = () => {
+
         try {
             // try to update doc
             firebase
@@ -60,6 +78,8 @@ const Todo = () => {
                 .set({
                     todo: input,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    experience: `${value[1]}`
+
                 })
                 .then(console.log('Data was successfully sent to cloud firestore!'))
         } catch (error) {
@@ -83,6 +103,7 @@ const Todo = () => {
     return (
 
         <Container maxW="container.md">
+
             <Flex justify="space-between" w="100%" align="center">
                 <Heading mb={4} variant='section-title'>{AuthUser.email} !</Heading>
                 <Flex>
@@ -104,7 +125,26 @@ const Todo = () => {
                 >
                     Add Todo
                 </Button>
+
             </InputGroup>
+            <RangeSlider
+                aria-label={["min", "max"]}
+                onChangeEnd={(value) => setValue(value)}
+                defaultValue={[0, 0]}
+                min={0} max={240}
+                step={30}
+                mt={1.5}
+
+
+            >
+                <RangeSliderTrack bg={inputColor} boxSize={1}>
+                    <RangeSliderFilledTrack bg={bg} />
+                </RangeSliderTrack>
+                <RangeSliderThumb index={0} bg='none' />
+                <RangeSliderThumb index={1} boxSize={5} bg={inputColor}>
+                    <UpDownIcon boxSize={3} color={bg} />
+                </RangeSliderThumb>
+            </RangeSlider>
             <Box mt='1.25rem'>
                 {todos.map((t, i) => {
                     return (
@@ -132,7 +172,7 @@ const Todo = () => {
 
             </Box>
 
-        </Container>
+        </Container >
     )
 
 }
