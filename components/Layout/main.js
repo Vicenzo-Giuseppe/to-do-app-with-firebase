@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import { Box, Container } from '@chakra-ui/react'
-import DashBoard from '../DashBoard/main'
 import Header from '../Header/main'
 import {
     useAuthUser,
