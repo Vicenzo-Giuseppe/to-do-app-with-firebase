@@ -4,7 +4,6 @@ import {
     RangeSliderTrack,
     RangeSliderFilledTrack,
     RangeSliderThumb,
-
 } from "@chakra-ui/react"
 import { UpDownIcon } from "@chakra-ui/icons"
 import React, { useState, useEffect } from 'react'
@@ -32,8 +31,7 @@ import getAbsoluteURL from '../utils/getAbsoluteURL'
 import { AddIcon, DeleteIcon, StarIcon } from "@chakra-ui/icons"
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import Slider from '../components/Slider/main'
-
+import "firebase/database"
 
 const Todo = () => {
     const bg = useColorModeValue('red.500', 'teal.500')
@@ -48,16 +46,21 @@ const Todo = () => {
     // console.log(todos)
 
     useEffect(() => {
+
         AuthUser.id &&
             firebase
-                .firestore()
-                .collection(AuthUser.email)
-                .orderBy('timestamp', 'desc')
-                .onSnapshot(snapshot => {
-
-                    setTodos(snapshot.docs.map(doc => doc.data().todo))
+                .database()
+                .ref(`users/${AuthUser.displayName}`)
+                .on('value', async function (snapshot) {
+                    if (snapshot.val() == null) {
+                        console.log('User with no Data')
+                        setTodos([])
+                    } else {
+                        const data = Object.keys(snapshot.val())
+                        setTodos(data)
+                    }
                 })
-    })
+    }, [input])
 
 
     useEffect(() => {
@@ -68,20 +71,16 @@ const Todo = () => {
 
 
     const sendData = () => {
-
         try {
-            // try to update doc
             firebase
-                .firestore()
-                .collection(AuthUser.email) // each user will have their own collection
-                .doc(input) // set the collection name to the input so that we can easily delete it later on
+                .database()
+                .ref(`users/${AuthUser.displayName}/${input}`)
                 .set({
                     todo: input,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
                     experience: `${value[1]}`
-
                 })
-                .then(console.log('Data was successfully sent to cloud firestore!'))
+                .then(console.log('Data was successfully sent to cloud database!'))
         } catch (error) {
             console.log(error)
         }
@@ -90,10 +89,9 @@ const Todo = () => {
     const deleteTodo = (t) => {
         try {
             firebase
-                .firestore()
-                .collection(AuthUser.email)
-                .doc(t)
-                .delete()
+                .database()
+                .ref(`users/${AuthUser.displayName}/${t}`)
+                .remove()
                 .then(console.log('Data was successfully deleted!'))
         } catch (error) {
             console.log(error)
@@ -105,7 +103,7 @@ const Todo = () => {
         <Container maxW="container.md">
 
             <Flex justify="space-between" w="100%" align="center">
-                <Heading mb={4} variant='section-title'>{AuthUser.email} !</Heading>
+                <Heading mb={4} variant='section-title'>{AuthUser.displayName} !</Heading>
                 <Flex>
                     <DarkModeSwitch bg={bg} />
 
@@ -161,6 +159,7 @@ const Todo = () => {
                                 justifyContent="space-between"
                                 opacity='0.84'
                             >
+
                                 <Flex align="center">
                                     <Text color={textColor}>{t}</Text>
                                 </Flex>

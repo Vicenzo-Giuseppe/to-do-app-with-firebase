@@ -3,8 +3,6 @@ import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 
-// Note that next-firebase-auth inits Firebase for us,
-// so we don't need to.
 
 const firebaseAuthConfig = {
     signInFlow: 'popup',
@@ -13,7 +11,8 @@ const firebaseAuthConfig = {
     signInOptions: [
         {
             provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-            requireDisplayName: false,
+
+
         },
     ],
     signInSuccessUrl: '/',
@@ -27,7 +26,11 @@ const firebaseAuthConfig = {
     },
 }
 
+
 const FirebaseAuth = () => {
+
+
+
     // Do not SSR FirebaseUI, because it is not supported.
     // https://github.com/firebase/firebaseui-web/issues/213
     const [renderAuth, setRenderAuth] = useState(false)
@@ -41,11 +44,13 @@ const FirebaseAuth = () => {
             {renderAuth ? (
                 <StyledFirebaseAuth
                     uiConfig={firebaseAuthConfig}
+
                     firebaseAuth={firebase.auth()}
                 />
             ) : null}
         </div>
     )
 }
+
 
 export default FirebaseAuth
