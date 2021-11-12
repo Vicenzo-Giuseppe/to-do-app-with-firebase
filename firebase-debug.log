@@ -1,0 +1,20 @@
+[debug] [2021-11-12T06:02:56.700Z] ----------------------------------------------------------------------
+[debug] [2021-11-12T06:02:56.703Z] Command:       /usr/bin/node /mnt/c/Code/to-do/node_modules/.bin/firebase deploy --only functions,hosting
+[debug] [2021-11-12T06:02:56.703Z] CLI Version:   9.22.0
+[debug] [2021-11-12T06:02:56.703Z] Platform:      linux
+[debug] [2021-11-12T06:02:56.703Z] Node Version:  v14.16.1
+[debug] [2021-11-12T06:02:56.716Z] Time:          Fri Nov 12 2021 03:02:56 GMT-0300 (Brasilia Standard Time)
+[debug] [2021-11-12T06:02:56.716Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2021-11-12T06:02:56.783Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-11-12T06:02:56.783Z] > authorizing via signed-in user (todoapp92301@gmail.com)
+[debug] [2021-11-12T06:02:56.783Z] [iam] checking project to-do-app-tcc for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2021-11-12T06:02:56.789Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/to-do-app-tcc:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2021-11-12T06:02:57.839Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 12 Nov 2021 06:02:56 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=729","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-11-12T06:02:57.841Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/to-do-app-tcc/serviceAccounts/to-do-app-tcc@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2021-11-12T06:02:58.822Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 12 Nov 2021 06:02:57 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-11-12T06:02:58.824Z] > refreshing access token with scopes: []
+[debug] [2021-11-12T06:02:58.824Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
