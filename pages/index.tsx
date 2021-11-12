@@ -4,24 +4,22 @@ import {
   withAuthUser,
   withAuthUserTokenSSR,
 } from 'next-firebase-auth'
-import { GrowList } from '../components/GrowList'
-
-
+import { Heading } from '@chakra-ui/react'
 const Demo = () => {
 
   return (
-    <GrowList>
-      <div>
 
+    <div>
+
+      <div >
         <div >
-          <div >
-            <h3>Home</h3>
+          <h3>Home</h3>
 
-            <a href="/todo" style={{ fontSize: "40px", textDecoration: 'underline' }}>Add a todo!</a>
-          </div>
+          <Heading variant='section-title'>Add a To-do</Heading>
         </div>
       </div>
-    </GrowList>
+    </div>
+
   )
 }
 

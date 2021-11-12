@@ -18,7 +18,9 @@ import {
     Text,
     IconButton,
     Container,
-    useColorModeValue
+    useColorModeValue,
+    Checkbox,
+    Progress
 } from "@chakra-ui/react"
 import DarkModeSwitch from '../components/DarkModeSwitch'
 import {
@@ -40,13 +42,22 @@ const Todo = () => {
     const AuthUser = useAuthUser()
     const [input, setInput] = useState('')
     const [todos, setTodos] = useState([])
-    const [value, setValue] = useState([])
+    const [value, setValue] = useState([1])
+    const [isCompleted, setIsCompleted] = useState([false])
 
     // console.log(AuthUser)
     // console.log(todos)
+    function dataAtualFormatada() {
+        var data = new Date(),
+            dia = data.getDate().toString().padStart(2, '0'),
+            mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+            ano = data.getFullYear();
+        return dia + "/" + mes + "/" + ano;
+    }
+
+
 
     useEffect(() => {
-
         AuthUser.id &&
             firebase
                 .database()
@@ -62,27 +73,32 @@ const Todo = () => {
                 })
     }, [input])
 
-
     useEffect(() => {
-        console.log(value[1])
-    }, [value])
-
-
-
+        console.log(isCompleted)
+    }, [setIsCompleted])
 
     const sendData = () => {
-        try {
-            firebase
-                .database()
-                .ref(`users/${AuthUser.displayName}/${input}`)
-                .set({
-                    todo: input,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP,
-                    experience: `${value[1]}`
-                })
-                .then(console.log('Data was successfully sent to cloud database!'))
-        } catch (error) {
-            console.log(error)
+
+        const date = new Date(Date.now())
+        console.log(dataAtualFormatada(date))
+        if (input === '') {
+            console.log('no Data to send')
+        } else {
+            try {
+                firebase
+                    .database()
+                    .ref(`users/${AuthUser.displayName}/${input}`)
+                    .set({
+                        todo: input,
+                        timestamp: dataAtualFormatada(date),
+                        experience: `${value[1]}`,
+                        isCompleted: false,
+                    })
+                    .then(console.log('Data was successfully sent to cloud database!'))
+            } catch (error) {
+                console.log(error)
+            }
+
         }
     }
 
@@ -98,12 +114,17 @@ const Todo = () => {
         }
     }
 
+    function onChange() {
+
+    }
+
     return (
 
         <Container maxW="container.md">
 
             <Flex justify="space-between" w="100%" align="center">
-                <Heading mb={4} variant='section-title'>{AuthUser.displayName} !</Heading>
+
+                <Heading mb={4} variant='section-title'>{AuthUser.displayName}!</Heading>
                 <Flex>
                     <DarkModeSwitch bg={bg} />
 
@@ -115,7 +136,7 @@ const Todo = () => {
                     pointerEvents="none"
                     children={<AddIcon color={bg} />}
                 />
-                <Input bg={inputColor} color={textColor} type="text" onChange={(e) => setInput(e.target.value)} />
+                <Input bg={inputColor} color={textColor} type="text" onChange={(e) => setInput(e.target.value)} focusBorderColor={bg} />
                 <Button
                     ml={2}
                     onClick={() => sendData()}
@@ -143,10 +164,13 @@ const Todo = () => {
                     <UpDownIcon boxSize={3} color={bg} />
                 </RangeSliderThumb>
             </RangeSlider>
+            <Progress size="xs" isIndeterminate value={value} />
             <Box mt='1.25rem'>
                 {todos.map((t, i) => {
+
                     return (
                         <>
+
                             <Flex
                                 key={i}
                                 bgColor={inputColor}
@@ -159,7 +183,7 @@ const Todo = () => {
                                 justifyContent="space-between"
                                 opacity='0.84'
                             >
-
+                                <Checkbox onChange={onChange} />
                                 <Flex align="center">
                                     <Text color={textColor}>{t}</Text>
                                 </Flex>
@@ -172,6 +196,7 @@ const Todo = () => {
             </Box>
 
         </Container >
+
     )
 
 }

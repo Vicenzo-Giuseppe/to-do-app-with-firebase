@@ -19,7 +19,8 @@ const components = {
                 textDecorationColor: '#525252',
                 textDecorationThickness: 4,
                 marginTop: 3,
-                marginBottom: 4
+                marginBottom: 4,
+                fontWeight: 400,
             }
         }
     },
@@ -37,15 +38,12 @@ const components = {
 }
 
 const fonts = {
-    text: "Montserrat"
+    heading: "Montserrat",
+    body: "Roboto",
 }
 
 const colors = {
-    greenForest: '#1A5653',
-    greenTeal: '#107869',
-    greenLime: '#5CD85A',
-    darkGray: '#202023',
-    lightGray: '#65656F'
+
 }
 
 const config: ThemeConfig = {

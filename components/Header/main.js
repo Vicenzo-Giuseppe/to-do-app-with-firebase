@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/button"
-import { Box, Container, Text } from "@chakra-ui/layout"
+import { Box, Container, Text, Progress } from "@chakra-ui/layout"
 import Link from 'next/link'
 import { GlassCard } from "../GlassCard"
 import Logo from './logo'
@@ -11,6 +11,7 @@ const Header = ({ email, signOut }) => (
       <Box>
 
         {email ? (
+
           <>
             <Text>Signed in as {email}</Text>
             <Button
