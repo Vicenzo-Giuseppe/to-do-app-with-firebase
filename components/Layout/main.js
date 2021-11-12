@@ -7,7 +7,7 @@ import {
 
 } from 'next-firebase-auth'
 
-const Main = ({ children, router }) => {
+const Main = ({ children }) => {
     const AuthUser = useAuthUser()
     return (
 

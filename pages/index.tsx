@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  useAuthUser,
   withAuthUser,
   withAuthUserTokenSSR,
 } from 'next-firebase-auth'

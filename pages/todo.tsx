@@ -1,4 +1,4 @@
-// @ts-nocheck 
+
 import {
     RangeSlider,
     RangeSliderTrack,
@@ -20,7 +20,7 @@ import {
     Container,
     useColorModeValue,
     Checkbox,
-    Progress
+
 } from "@chakra-ui/react"
 import DarkModeSwitch from '../components/DarkModeSwitch'
 import {
@@ -30,7 +30,7 @@ import {
     AuthAction,
 } from 'next-firebase-auth'
 import getAbsoluteURL from '../utils/getAbsoluteURL'
-import { AddIcon, DeleteIcon, StarIcon } from "@chakra-ui/icons"
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons"
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import "firebase/database"
@@ -48,10 +48,10 @@ const Todo = () => {
     // console.log(AuthUser)
     // console.log(todos)
     function dataAtualFormatada() {
-        var data = new Date(),
-            dia = data.getDate().toString().padStart(2, '0'),
-            mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
-            ano = data.getFullYear();
+        const edata = new Date(),
+            dia = edata.getDate().toString().padStart(2, '0'),
+            mes = (edata.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.
+            ano = edata.getFullYear();
         return dia + "/" + mes + "/" + ano;
     }
 
@@ -67,7 +67,8 @@ const Todo = () => {
                         console.log('User with no Data')
                         setTodos([])
                     } else {
-                        const data = Object.keys(snapshot.val())
+
+                        const data: any = Object.keys(snapshot.val())
                         setTodos(data)
                     }
                 })
@@ -79,8 +80,6 @@ const Todo = () => {
 
     const sendData = () => {
 
-        const date = new Date(Date.now())
-        console.log(dataAtualFormatada(date))
         if (input === '') {
             console.log('no Data to send')
         } else {
@@ -90,32 +89,34 @@ const Todo = () => {
                     .ref(`users/${AuthUser.displayName}/${input}`)
                     .set({
                         todo: input,
-                        timestamp: dataAtualFormatada(date),
+                        timestamp: firebase.database.ServerValue.TIMESTAMP,
                         experience: `${value[1]}`,
                         isCompleted: false,
                     })
-                    .then(console.log('Data was successfully sent to cloud database!'))
             } catch (error) {
                 console.log(error)
             }
 
         }
     }
-
-    const deleteTodo = (t) => {
+    interface t {
+        t: string,
+        i: string,
+    }
+    const deleteTodo = (t: t) => {
         try {
             firebase
                 .database()
                 .ref(`users/${AuthUser.displayName}/${t}`)
                 .remove()
-                .then(console.log('Data was successfully deleted!'))
+
         } catch (error) {
             console.log(error)
         }
     }
 
     function onChange() {
-
+        console.log('data send!')
     }
 
     return (
@@ -125,8 +126,8 @@ const Todo = () => {
             <Flex justify="space-between" w="100%" align="center">
 
                 <Heading mb={4} variant='section-title'>{AuthUser.displayName}!</Heading>
-                <Flex>
-                    <DarkModeSwitch bg={bg} />
+                <Flex bg={bg}>
+                    <DarkModeSwitch />
 
                 </Flex>
             </Flex>
@@ -164,7 +165,7 @@ const Todo = () => {
                     <UpDownIcon boxSize={3} color={bg} />
                 </RangeSliderThumb>
             </RangeSlider>
-            <Progress size="xs" isIndeterminate value={value} />
+
             <Box mt='1.25rem'>
                 {todos.map((t, i) => {
 
@@ -187,7 +188,7 @@ const Todo = () => {
                                 <Flex align="center">
                                     <Text color={textColor}>{t}</Text>
                                 </Flex>
-                                <IconButton color='#FFF' bgColor={bg} onClick={() => deleteTodo(t)} icon={<DeleteIcon />} />
+                                <IconButton aria-label="Delete to-do" color='#FFF' bgColor={bg} onClick={() => deleteTodo(t)} icon={<DeleteIcon />} />
                             </Flex>
                         </>
                     )
