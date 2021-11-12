@@ -5,7 +5,7 @@ import {
   withAuthUserSSR,
   AuthAction,
 } from 'next-firebase-auth'
-import Header from '../components/Header'
+import Header from '../components/Header/main'
 import DemoPageLinks from '../components/DemoPageLinks'
 import getAbsoluteURL from '../utils/getAbsoluteURL'
 
