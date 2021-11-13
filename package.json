@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "cross-env NODE_OPTIONS='--unhandled-rejections=strict' next build ",
     "start": "next start",
     "deploy": "firebase deploy --only functions,hosting",
     "prettier": "prettier -write .",
@@ -26,6 +26,7 @@
     "@typescript-eslint/parser": "^5.3.1",
     "clsx": "^1.1.1",
     "color": "^4.0.1",
+    "cross-env": "^7.0.3",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "firebase": "^8.9.1",

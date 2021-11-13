@@ -5,6 +5,8 @@ import absoluteUrl from 'next-absolute-url'
 const TWELVE_DAYS_IN_MS = 12 * 60 * 60 * 24 * 1000
 
 const initAuth = () => {
+
+
   init({
     debug: true,
 
@@ -43,7 +45,7 @@ const initAuth = () => {
       if (destinationParamVal) {
         // Verify the redirect URL host is allowed.
         // https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/11-Client_Side_Testing/04-Testing_for_Client_Side_URL_Redirect
-        const allowedHosts = ['localhost:3000', 'nfa-example.vercel.app']
+        const allowedHosts = ['localhost:3000', 'https://to-do-klzvgqsdo-vicenzo-giuseppe.vercel.app']
         const allowed =
           allowedHosts.indexOf(new URL(destinationParamVal).host) > -1
         if (allowed) {
@@ -69,7 +71,7 @@ const initAuth = () => {
         // key as a secret in Vercel. See:
         // https://github.com/vercel/vercel/issues/749#issuecomment-707515089
         privateKey: process.env.FIREBASE_PRIVATE_KEY
-          ? JSON.parse(process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'))
+          ? (process.env.FIREBASE_PRIVATE_KEY)
           : undefined,
       },
       databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
@@ -86,12 +88,12 @@ const initAuth = () => {
         process.env.COOKIE_SECRET_CURRENT,
         process.env.COOKIE_SECRET_PREVIOUS,
       ],
-      httpOnly: true,
+      httpOnly: false,
       maxAge: TWELVE_DAYS_IN_MS,
       overwrite: true,
-      path: '/',
-      sameSite: 'strict',
-      secure: process.env.NEXT_PUBLIC_COOKIE_SECURE === 'true',
+      path: '/auth',
+      sameSite: 'lax',
+      secure: process.env.NEXT_PUBLIC_COOKIE_SECURE,
       signed: true,
     },
   })
