@@ -1,27 +1,44 @@
-import React from 'react'
-import {
-  withAuthUser,
-  withAuthUserTokenSSR,
-} from 'next-firebase-auth'
-import { Heading } from '@chakra-ui/react'
-const Demo = () => {
 
+import { Heading, Flex, Stack, Input, Button } from '@chakra-ui/react'
+import { useAuth } from '../firebase/authUserContext'
+import Link from 'next/link'
+
+export default function index() {
   return (
+    <>
 
-    <div>
+      <Flex
+        align='center'
+        justify='center'
 
-      <div >
-        <div >
-          <h3>Home</h3>
+      >
+        <Flex
+          w='100%'
+          maxW={360}
+          bg='#1a202c'
+          p='8'
+          borderRadius={8}
+          flexDir='column'
 
-          <Heading variant='section-title'>Add a To-do</Heading>
-        </div>
-      </div>
-    </div>
+        >
 
+          <Link href='/todo'>
+            <Button
+              type='button'
+              size='lg'
+              fontSize='md'
+              bg='linear-gradient(40deg, #ff6ec4, #7873f5)'
+              _hover={{ bg: "linear-gradient(40deg, #ff6ec4, #7873f5)" }}
+              color='#FFF'
+            >
+              Minha lista de To-do's
+            </Button>
+          </Link>
+
+        </Flex>
+      </Flex>
+    </>
   )
 }
 
-export const getServerSideProps = withAuthUserTokenSSR()()
 
-export default withAuthUser()(Demo)

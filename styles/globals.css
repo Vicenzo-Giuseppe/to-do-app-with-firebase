@@ -1,0 +1,7 @@
+body {
+    background: url(background.jpeg) !important;
+    background-size: 100% 100%!important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-attachment: fixed !important;
+}
